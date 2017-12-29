@@ -1,0 +1,18 @@
+# temporary/backup files
+*~
+
+# c++
+*.d
+*.o
+*.so
+
+# python
+*.pyc
+*__pycache__/
+*.cache
+
+# log files
+*.log
+
+bin/install
+
