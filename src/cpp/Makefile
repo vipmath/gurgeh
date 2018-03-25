@@ -1,42 +1,30 @@
+include $(K273_PATH)/src/cpp/Makefile.in
 
-INCLUDE_PATH = $(GGPLIB_PATH)/src/cpp
-LIB_PATH = $(GGPLIB_PATH)/src/cpp
+LIBS = -L $(K273_PATH)/src/cpp/k273 -lk273 -L$(GGPLIB_PATH)/src/cpp -lggplib_cpp
+INCLUDE_PATHS += -I $(GGPLIB_PATH)/src/cpp
 
-AR = ar
-RM = rm -f
-CPP = g++
+CFLAGS += -fPIC
 
-CFLAGS = -MMD -MP -g -Wall -Werror -Woverloaded-virtual -Wnon-virtual-dtor -O3 -fPIC -fomit-frame-pointer -std=c++11
-LDFLAGS = -g -MMD -MP -Wall -Werror -Woverloaded-virtual -Wnon-virtual-dtor -O3 -fomit-frame-pointer -std=c++11
+SRCS = mcts.cpp worker.cpp interface.cpp
 
-
-SRCS = mcts.cpp worker.cpp
-SRCS += interface.cpp
-
-CORE_OBJS = $(patsubst %.cpp, %.o, $(SRCS))
-OBJS := $(CORE_OBJS)
+OBJS = $(patsubst %.cpp, %.o, $(SRCS))
 DEPS=$(SRCS:.cpp=.d)
 
 # Top level
 all: $(OBJS) libgurgehplayer_cpp.so
 
-fresh : clean all
-
 # Compiles
 libgurgehplayer_cpp.so: $(OBJS)
-	$(CPP) -shared $(CORE_OBJS) $(LDFLAGS) -L $(LIB_PATH) -pthread -lrt -lggplib_cpp -o libgurgehplayer_cpp.so
+	$(CPP) -shared $(LDFLAGS) $(OBJS) $(LIBS) -o $@
 
 %.o : %.cpp
-	$(CPP) -I $(INCLUDE_PATH) $(CFLAGS) -c -o $@ $<
+	$(CPP) $(INCLUDE_PATHS) $(CFLAGS) -c -o $@ $<
 
 # Cleans
 clean :
-	$(RM) $(OBJS) $(DEPS)
-
-realclean : clean
-	$(RM) *.so *.log core*
+	$(RM) libgurgehplayer_cpp.so $(OBJS) $(DEPS)
 
 -include $(DEPS)
-.PHONY: all fresh clean realclean
+.PHONY: all clean
 
 

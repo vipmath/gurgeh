@@ -58,7 +58,7 @@ def get_lib():
     return ffi, ffi.verify('#include <interface.h>\n',
                            include_dirs=[local_path],
                            library_dirs=[ggplib_path, local_path],
-                           libraries=["rt", "ggplib_cpp", "gurgehplayer_cpp"])
+                           libraries=["gurgehplayer_cpp"])
 
 
 _, lib = get_lib()
