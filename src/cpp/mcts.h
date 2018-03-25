@@ -9,6 +9,8 @@
 #include <statemachine/jointmove.h>
 #include <statemachine/statemachine.h>
 
+#include <k273/rng.h>
+
 #include <queue>
 #include <vector>
 
@@ -92,7 +94,9 @@ namespace PlayerMcts {
         };
 
         PlayoutStats playout_stats;
-        K273::Random random;
+
+        // random number generator
+        K273::xoroshiro128plus32 rng;
     };
 
 }

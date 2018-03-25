@@ -173,7 +173,7 @@ bool Player::selectChild(Node* node, Path::Selected& path, int depth) {
 
         double search_score;
         if (node->visits < random_counts) {
-            const double rand_size = 100 * (this->random.getWithMax(1000) + 1);
+            const double rand_size = 100 * (this->rng.getWithMax(1000) + 1);
             search_score = 1.0 + 1.0 / rand_size;
 
         } else {
@@ -231,7 +231,7 @@ bool Player::selectChild(Node* node, Path::Selected& path, int depth) {
                 search_score = 1.0;
 
                 // add some randomness
-                const double rand_size = 100 * (this->random.getWithMax(1000) + 1);
+                const double rand_size = 100 * (this->rng.getWithMax(1000) + 1);
                 search_score += 1.0 / rand_size;
 
                 // simulate worst possible result for inflight_visits, encourages exploration
@@ -684,7 +684,7 @@ NodeChild* Player::chooseBest(Node* node, bool warn) {
 
     // failsafe - random
     if (selection == nullptr) {
-        selection = node->getNodeChild(role_count, this->random.getWithMax(node->num_children));
+        selection = node->getNodeChild(role_count, this->rng.getWithMax(node->num_children));
     }
 
     return selection;
